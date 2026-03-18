@@ -13,7 +13,32 @@ export default function FreePlayPage() {
   const [par, setPar] = useState<number | null>(null);
   const [gameActive, setGameActive] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [randomizing, setRandomizing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  async function handleRandomize() {
+    setRandomizing(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/random-pair");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? "Failed to pick random players.");
+        setRandomizing(false);
+        return;
+      }
+
+      setStartPlayer(data.startPlayer);
+      setEndPlayer(data.endPlayer);
+      setPar(data.par);
+      setGameActive(true);
+    } catch {
+      setError("Failed to pick random players.");
+    }
+    setRandomizing(false);
+  }
 
   async function handleStart() {
     if (!startPlayer || !endPlayer) return;
@@ -151,14 +176,25 @@ export default function FreePlayPage() {
 
         {error && <div className="text-sm text-[var(--error)] text-center">{error}</div>}
 
-        <button
-          onClick={handleStart}
-          disabled={!startPlayer || !endPlayer || loading}
-          className="w-full py-3 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white rounded-lg
-                     font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? "Checking connection..." : "Start Game"}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleStart}
+            disabled={!startPlayer || !endPlayer || loading || randomizing}
+            className="flex-1 py-3 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white rounded-lg
+                       font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Checking connection..." : "Start Game"}
+          </button>
+          <button
+            onClick={handleRandomize}
+            disabled={loading || randomizing}
+            className="py-3 px-4 bg-[var(--card)] border border-[var(--card-border)] hover:border-[var(--accent)]
+                       text-[var(--foreground)] rounded-lg font-medium transition-colors
+                       disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {randomizing ? "Picking..." : "Randomize"}
+          </button>
+        </div>
       </div>
     </div>
   );
