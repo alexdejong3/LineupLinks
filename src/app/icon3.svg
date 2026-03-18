@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Diamond shape (rotated square) -->
+  <rect x="5" y="5" width="22" height="22" rx="2" ry="2" transform="rotate(45 16 16)" fill="#22c55e" opacity="0.15" stroke="#22c55e" stroke-width="1.5"/>
+  <!-- Base paths -->
+  <line x1="16" y1="5" x2="27" y2="16" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="27" y1="16" x2="16" y2="27" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="16" y1="27" x2="5" y2="16" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+  <line x1="5" y1="16" x2="16" y2="5" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>
+  <!-- Bases as dots -->
+  <circle cx="16" cy="5" r="2.5" fill="#e2e8f0"/>  <!-- 2nd base -->
+  <circle cx="27" cy="16" r="2.5" fill="#e2e8f0"/>  <!-- 1st base -->
+  <circle cx="5" cy="16" r="2.5" fill="#e2e8f0"/>   <!-- 3rd base -->
+  <circle cx="16" cy="27" r="3" fill="#3b82f6"/>     <!-- Home plate -->
+</svg>

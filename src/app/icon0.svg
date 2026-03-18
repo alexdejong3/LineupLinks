@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <clipPath id="top">
+      <rect x="0" y="0" width="32" height="16"/>
+    </clipPath>
+    <clipPath id="bottom">
+      <rect x="0" y="16" width="32" height="16"/>
+    </clipPath>
+  </defs>
+  <!-- Bottom half: left link on top of right -->
+  <rect x="12" y="8" width="17" height="16" rx="8" ry="8" fill="none" stroke="#22c55e" stroke-width="2.5" clip-path="url(#bottom)"/>
+  <rect x="3" y="8" width="17" height="16" rx="8" ry="8" fill="none" stroke="#3b82f6" stroke-width="2.5" clip-path="url(#bottom)"/>
+  <!-- Top half: right link on top of left -->
+  <rect x="3" y="8" width="17" height="16" rx="8" ry="8" fill="none" stroke="#3b82f6" stroke-width="2.5" clip-path="url(#top)"/>
+  <rect x="12" y="8" width="17" height="16" rx="8" ry="8" fill="none" stroke="#22c55e" stroke-width="2.5" clip-path="url(#top)"/>
+</svg>
