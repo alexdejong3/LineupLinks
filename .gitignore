@@ -5,4 +5,6 @@ dist/
 .env.local
 .next/
 data/*.db
+data/daily-overrides.json
 tsconfig.tsbuildinfo
+.claude/settings.local.json

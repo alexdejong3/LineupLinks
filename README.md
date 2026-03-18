@@ -40,3 +40,7 @@ The daily challenge uses a deterministic seeded PRNG so every player sees the sa
 ## Deployment
 
 Dockerized standalone Next.js on [Fly.io](https://fly.io). The SQLite database is baked into the container image at build time.
+
+## Disclaimer
+
+This project was built with [Claude](https://claude.ai).
