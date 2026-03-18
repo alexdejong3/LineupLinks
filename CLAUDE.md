@@ -9,6 +9,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run start` — Start production server
 - `npm run ingest` — Populate SQLite DB from MLB Stats API (1970–2025, takes a while due to API throttling)
 - `npm run backfill-team-seasons` — Backfill team_seasons table
+- `npm run backfill-allstar` — Backfill All-Star appearance data into `allstar_appearances` table and `players.allstar_appearances` count
+- `npm run backfill-positions` — Backfill `players.primary_position` from MLB API
+- `npm run repick-daily` — Regenerate today's daily challenge (or pass `YYYY-MM-DD`), writes to `data/daily-overrides.json`
 
 No test runner or linter is configured. TypeScript strict mode is on (`tsconfig.json`).
 
@@ -19,7 +22,7 @@ No test runner or linter is configured. TypeScript strict mode is on (`tsconfig.
 ### Data layer
 
 - **SQLite** (`data/mlb.db`) via `better-sqlite3`, opened read-only at runtime (`src/lib/db.ts`)
-- Schema: `players`, `teams`, `roster_appearances(player_id, team_id, season)`, `team_seasons(team_id, season, name, abbreviation)`
+- Schema: `players(id, full_name, debut_year, last_year, allstar_appearances, primary_position)`, `teams(id, name, abbreviation)`, `roster_appearances(player_id, team_id, season)`, `team_seasons(team_id, season, name, abbreviation)`, `allstar_appearances(player_id, season)`
 - Data ingested from `statsapi.mlb.com` by `scripts/ingest.ts`
 - The `.db` file is gitignored — must run `npm run ingest` to populate locally
 
@@ -29,7 +32,7 @@ The core algorithm. On first request, `buildGraph()` loads all roster appearance
 
 ### Daily challenge (`src/lib/daily.ts`)
 
-Uses a deterministic seeded PRNG (mulberry32) keyed on the date string to pick two "notable" players (10+ seasons) with a shortest path of 2–6 steps. Same date always produces the same challenge.
+Uses a deterministic seeded PRNG (mulberry32) keyed on the date string to pick two "notable" players (All-Stars or recent 6+ year players) with a shortest path of 2–6 steps. Same date always produces the same challenge. Manual overrides stored in `data/daily-overrides.json` take precedence (created via `npm run repick-daily`).
 
 ### API routes (`src/app/api/`)
 
@@ -56,3 +59,7 @@ Dark theme using CSS custom properties defined in `globals.css` (e.g., `--accent
 ### Path alias
 
 `@/*` maps to `./src/*` (configured in `tsconfig.json`).
+
+### Deployment
+
+Dockerized standalone Next.js deployed to Fly.io (region: IAD). The SQLite DB is copied into the container at build time — data updates require a rebuild. Output mode is `standalone` in `next.config.ts`; `better-sqlite3` is listed as a server external package.
